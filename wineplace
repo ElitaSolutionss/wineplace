@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinePlace - Digital Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #0c0c0c;
+            color: #e6e6e6;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(90, 90, 90, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 75% 75%, rgba(90, 90, 90, 0.1) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Top Bar with Social Media and Language */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(139, 90, 43, 0.3);
+        }
+
+        .social-media {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 50%;
+            color: #d4af37;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(100, 72, 45, 0.3);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            background: rgba(139, 90, 43, 0.3);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(20, 20, 20, 0.7);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(100, 72, 45, 0.3);
+        }
+
+        .language-option {
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .language-option.active {
+            background: rgba(139, 90, 43, 0.3);
+            color: #d4af37;
+            font-weight: 500;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 10px;
+            border: 1px solid rgba(100, 72, 45, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .logo-main {
+            font-family: 'Garamond', serif;
+            font-size: 3.5rem;
+            color: #d4af37;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+        }
+
+        .logo-sub {
+            font-family: 'Garamond', serif;
+            font-size: 1.4rem;
+            color: #a8926d;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+
+        /* Homepage Sections */
+        .homepage {
+            display: block;
+        }
+
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .section-card {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(100, 72, 45, 0.3);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: rgba(139, 90, 43, 0.4);
+        }
+
+        .card-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(20, 20, 20, 0.5);
+        }
+
+        .card-image i {
+            font-size: 4rem;
+            color: rgba(212, 175, 55, 0.3);
+        }
+
+        .card-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-family: 'Garamond', serif;
+            font-size: 1.8rem;
+            color: #d4af37;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: #b3b3b3;
+            line-height: 1.5;
+        }
+
+        /* Menu Sections */
+        .menu-section {
+            margin-bottom: 40px;
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid rgba(100, 72, 45, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+
+        .menu-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8b5a2b, transparent);
+        }
+
+        .section-title {
+            font-family: 'Garamond', serif;
+            font-size: 2.2rem;
+            color: #d4af37;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(139, 90, 43, 0.5);
+            text-align: center;
+        }
+
+        .back-button {
+            background: rgba(139, 90, 43, 0.3);
+            border: 1px solid rgba(100, 72, 45, 0.3);
+            color: #d4af37;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(139, 90, 43, 0.5);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .menu-item {
+            background: rgba(40, 40, 40, 0.9);
+            border-radius: 8px;
+            padding: 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(100, 72, 45, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #8b5a2b, transparent);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: rgba(139, 90, 43, 0.4);
+        }
+
+        .item-image {
+            height: 180px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(20, 20, 20, 0.5);
+        }
+
+        .item-image i {
+            font-size: 4rem;
+            color: rgba(212, 175, 55, 0.3);
+        }
+
+        .item-content {
+            padding: 20px;
+        }
+
+        .item-title {
+            font-size: 1.4rem;
+            color: #d4af37;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .item-desc {
+            font-size: 0.95rem;
+            color: #b3b3b3;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .price-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(139, 90, 43, 0.3);
+        }
+
+        .price-bottle, .price-glass {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-label {
+            font-size: 0.8rem;
+            color: #a8926d;
+            margin-bottom: 5px;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .glass-only .price-section {
+            justify-content: flex-start;
+            gap: 30px;
+        }
+
+        .barrel-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, transparent, #5c3e1c, #8b5a2b, #5c3e1c, transparent);
+            margin: 30px 0;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(139, 90, 43, 0.5);
+            color: #a8926d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .menu-grid, .home-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo-main {
+                font-size: 2.5rem;
+            }
+            
+            .logo-sub {
+                font-size: 1.1rem;
+                letter-spacing: 5px;
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar with Social Media and Language Toggle -->
+        <div class="top-bar">
+            <div class="social-media">
+                <a href="#" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-icon">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="#" class="social-icon">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+            </div>
+            
+            <div class="language-switcher">
+                <div class="language-option active" data-lang="mk">МК</div>
+                <div class="language-option" data-lang="en">EN</div>
+            </div>
+        </div>
+
+        <header>
+            <div class="logo-container">
+                <h1 class="logo-main">WinePlace</h1>
+                <div class="logo-sub">CULTURE CLUB</div>
+            </div>
+        </header>
+
+        <div class="barrel-decoration"></div>
+
+        <main>
+            <!-- Homepage -->
+            <div class="homepage active" id="home">
+                <h2 class="section-title" data-translate="our_offer">Нашата понуда</h2>
+                <div class="home-grid">
+                    <div class="section-card" data-target="white-wine">
+                        <div class="card-image">
+                            <i class="fas fa-wine-glass-alt"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title" data-translate="white_wine">Бело Вино</h3>
+                            <p class="card-desc" data-translate="white_wine_desc">Освежувачки бели вина од светски познати сорти</p>
+                        </div>
+                    </div>
+                    <div class="section-card" data-target="red-wine">
+                        <div class="card-image">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title" data-translate="red_wine">Црвено Вино</h3>
+                            <p class="card-desc" data-translate="red_wine_desc">Богати црвени вина со длабоки вкусови</p>
+                        </div>
+                    </div>
+                    <div class="section-card" data-target="rose-wine">
+                        <div class="card-image">
+                            <i class="fas fa-wine-glass"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title" data-translate="rose_wine">Розе Вино</h3>
+                            <p class="card-desc" data-translate="rose_wine_desc">Свежи розе вина за освежување</p>
+                        </div>
+                    </div>
+                    <div class="section-card" data-target="strong-drinks">
+                        <div class="card-image">
+                            <i class="fas fa-glass-whiskey"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title" data-translate="strong_drinks">Алкохолни Пијалоци</h3>
+                            <p class="card-desc" data-translate="strong_drinks_desc">Избор на алкохолни пијалоци од светска класа</p>
+                        </div>
+                    </div>
+                    <div class="section-card" data-target="appetizers">
+                        <div class="card-image">
+                            <i class="fas fa-cheese"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title" data-translate="appetizers">Предјадења</h3>
+                            <p class="card-desc" data-translate="appetizers_desc">Вкусни предјадења што одлично се комбинираат со вино</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- White Wine Section -->
+            <section class="menu-section" id="white-wine">
+                <button class="back-button" onclick="showHome()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-translate="back_home">Назад кон почетна</span>
+                </button>
+                <h2 class="section-title" data-translate="white_wine">Бело Вино</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Шардоне</h3>
+                            <p class="item-desc" data-translate="chardonnay_desc">Суво бело вино со ноти на цитрус и праска</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.200 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass">Чаша (150ml)</span>
+                                    <span class="price">180 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Совињон Блан</h3>
+                            <p class="item-desc" data-translate="sauvignon_desc">Освежувачко вино со арома на зелен пипер и трева</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.350 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass">Чаша (150ml)</span>
+                                    <span class="price">200 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Пино Гри</h3>
+                            <p class="item-desc" data-translate="pinot_grigio_desc">Лесно вино со вкус на круша и јаболко</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.100 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass">Чаша (150ml)</span>
+                                    <span class="price">160 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Red Wine Section -->
+            <section class="menu-section" id="red-wine">
+                <button class="back-button" onclick="showHome()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-translate="back_home">Назад кон почетна</span>
+                </button>
+                <h2 class="section-title" data-translate="red_wine">Црвено Вино</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Мерло</h3>
+                            <p class="item-desc" data-translate="merlot_desc">Меко вино со ноти на цреша и шумски плодови</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.400 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass">Чаша (150ml)</span>
+                                    <span class="price">210 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Каберне Совињон</h3>
+                            <p class="item-desc" data-translate="cabernet_desc">Богато вино со вкус на црна рибизла и темно кафе</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.600 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass">Чаша (150ml)</span>
+                                    <span class="price">240 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Пино Ноар</h3>
+                            <p class="item-desc" data-translate="pinot_noir_desc">Елегантно вино со арома на јагода и ванила</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.500 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass">Чаша (150ml)</span>
+                                    <span class="price">220 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rosé Wine Section -->
+            <section class="menu-section" id="rose-wine">
+                <button class="back-button" onclick="showHome()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-translate="back_home">Назад кон почетна</span>
+                </button>
+                <h2 class="section-title" data-translate="rose_wine">Розе Вино</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Прованса Розе</h3>
+                            <p class="item-desc" data-translate="provence_rose_desc">Светло розе вино со свежи ноти на црвени бобинки</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.300 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass">Чаша (150ml)</span>
+                                    <span class="price">190 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Црвен Винождер Розе</h3>
+                            <p class="item-desc" data-translate="red_vineyard_rose_desc">Розе вино со интензивен вкус на јагода и лубеница</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.250 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass">Чаша (150ml)</span>
+                                    <span class="price">185 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-wine-bottle"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Бледо Розе</h3>
+                            <p class="item-desc" data-translate="pale_rose_desc">Суво розе вино со арома на цитрус и карамел</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.400 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass">Чаша (150ml)</span>
+                                    <span class="price">200 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Strong Drinks Section -->
+            <section class="menu-section" id="strong-drinks">
+                <button class="back-button" onclick="showHome()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-translate="back_home">Назад кон почетна</span>
+                </button>
+                <h2 class="section-title" data-translate="strong_drinks">Алкохолни Пијалоци</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-glass-whiskey"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title" data-translate="whiskey">Виски</h3>
+                            <p class="item-desc" data-translate="whiskey_desc">Избор од светски познати брендови виски</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">2.500 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass_50ml">Чаша (50ml)</span>
+                                    <span class="price">250 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-glass-whiskey"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title" data-translate="vodka">Водка</h3>
+                            <p class="item-desc" data-translate="vodka_desc">Водка од најдобри светски производители</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.800 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass_50ml">Чаша (50ml)</span>
+                                    <span class="price">180 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-glass-whiskey"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title" data-translate="rakija">Ракија</h3>
+                            <p class="item-desc" data-translate="rakija_desc">Традиционална македонска ракија од различни овошја</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="bottle">Флаша</span>
+                                    <span class="price">1.500 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="glass_50ml">Чаша (50ml)</span>
+                                    <span class="price">150 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appetizers Section -->
+            <section class="menu-section" id="appetizers">
+                <button class="back-button" onclick="showHome()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-translate="back_home">Назад кон почетна</span>
+                </button>
+                <h2 class="section-title" data-translate="appetizers">Предјадења</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-cheese"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title" data-translate="cheese_board">Сиренје Табла</h3>
+                            <p class="item-desc" data-translate="cheese_board_desc">Избор на локални и меѓународни сирења со фрукты и леб</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="small">Мала</span>
+                                    <span class="price">600 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="large">Голема</span>
+                                    <span class="price">1.000 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-bread-slice"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title" data-translate="mezze">Меѓусно</h3>
+                            <p class="item-desc" data-translate="mezze_desc">Традиционално меѓусно со специјалии од Македонија</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="for_two">За 2 лица</span>
+                                    <span class="price">800 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="for_four">За 4 лица</span>
+                                    <span class="price">1.400 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-image">
+                            <i class="fas fa-drumstick-bite"></i>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title" data-translate="mixed_meats">Мешани Меса</h3>
+                            <p class="item-desc" data-translate="mixed_meats_desc">Избор на суви меса и колбаси од регионални производи</p>
+                            <div class="price-section">
+                                <div class="price-bottle">
+                                    <span class="price-label" data-translate="small">Мала</span>
+                                    <span class="price">700 ден.</span>
+                                </div>
+                                <div class="price-glass">
+                                    <span class="price-label" data-translate="large">Голема</span>
+                                    <span class="price">1.200 ден.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2023 WinePlace - <span data-translate="rights_reserved">Сите права се задржани</span></p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuSections = document.querySelectorAll('.menu-section');
+            const homepage = document.getElementById('home');
+            const sectionCards = document.querySelectorAll('.section-card');
+            
+            // Section card functionality
+            sectionCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    showSection(targetId);
+                });
+            });
+            
+            function showSection(targetId) {
+                // Show the corresponding section
+                if (targetId === 'home') {
+                    homepage.classList.add('active');
+                    menuSections.forEach(section => section.classList.remove('active'));
+                    // Scroll to top when going back to home
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    homepage.classList.remove('active');
+                    menuSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                            // Scroll to the top of the active section
+                            setTimeout(() => {
+                                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 100);
+                        }
+                    });
+                }
+            }
+            
+            // Make the showHome function available globally
+            window.showHome = function() {
+                showSection('home');
+            };
+            
+            // Language switching functionality
+            const languageOptions = document.querySelectorAll('.language-option');
+            
+            // Define translations
+            const translations = {
+                'mk': {
+                    'our_offer': 'Нашата понуда',
+                    'white_wine': 'Бело Вино',
+                    'white_wine_desc': 'Освежувачки бели вина од светски познати сорти',
+                    'red_wine': 'Црвено Вино',
+                    'red_wine_desc': 'Богати црвени вина со длабоки вкусови',
+                    'rose_wine': 'Розе Вино',
+                    'rose_wine_desc': 'Свежи розе вина за освежување',
+                    'strong_drinks': 'Алкохолни Пијалоци',
+                    'strong_drinks_desc': 'Избор на алкохолни пијалоци од светска класа',
+                    'appetizers': 'Предјадења',
+                    'appetizers_desc': 'Вкусни предјадења што одлично се комбинираат со вино',
+                    'back_home': 'Назад кон почетна',
+                    'bottle': 'Флаша',
+                    'glass': 'Чаша (150ml)',
+                    'glass_50ml': 'Чаша (50ml)',
+                    'small': 'Мала',
+                    'large': 'Голема',
+                    'for_two': 'За 2 лица',
+                    'for_four': 'За 4 лица',
+                    'rights_reserved': 'Сите права се задржани',
+                    'chardonnay_desc': 'Суво бело вино со ноти на цитрус и праска',
+                    'sauvignon_desc': 'Освежувачко вино со арома на зелен пипер и трева',
+                    'pinot_grigio_desc': 'Лесно вино со вкус на круша и јаболко',
+                    'merlot_desc': 'Меко вино со ноти на цреша и шумски плодови',
+                    'cabernet_desc': 'Богато вино со вкус на црна рибизла и темно кафе',
+                    'pinot_noir_desc': 'Елегантно вино со арома на јагода и ванила',
+                    'provence_rose_desc': 'Светло розе вино со свежи ноти на црвени бобинки',
+                    'red_vineyard_rose_desc': 'Розе вино со интензивен вкус на јагода и лубеница',
+                    'pale_rose_desc': 'Суво розе вино со арома на цитрус и карамел',
+                    'whiskey': 'Виски',
+                    'whiskey_desc': 'Избор од светски познати брендови виски',
+                    'vodka': 'Водка',
+                    'vodka_desc': 'Водка од најдобри светски производители',
+                    'rakija': 'Ракија',
+                    'rakija_desc': 'Традиционална македонска ракија од различни овошја',
+                    'cheese_board': 'Сиренје Табла',
+                    'cheese_board_desc': 'Избор на локални и меѓународни сирења со фрукты и леб',
+                    'mezze': 'Меѓусно',
+                    'mezze_desc': 'Традиционално меѓусно со специјалии од Македонија',
+                    'mixed_meats': 'Мешани Меса',
+                    'mixed_meats_desc': 'Избор на суви меса и колбаси од регионални производи'
+                },
+                'en': {
+                    'our_offer': 'Our Offer',
+                    'white_wine': 'White Wine',
+                    'white_wine_desc': 'Refreshing white wines from world-famous varieties',
+                    'red_wine': 'Red Wine',
+                    'red_wine_desc': 'Rich red wines with deep flavors',
+                    'rose_wine': 'Rosé Wine',
+                    'rose_wine_desc': 'Fresh rosé wines for refreshment',
+                    'strong_drinks': 'Alcoholic Beverages',
+                    'strong_drinks_desc': 'Selection of world-class alcoholic beverages',
+                    'appetizers': 'Appetizers',
+                    'appetizers_desc': 'Delicious appetizers that pair perfectly with wine',
+                    'back_home': 'Back to Home',
+                    'bottle': 'Bottle',
+                    'glass': 'Glass (150ml)',
+                    'glass_50ml': 'Glass (50ml)',
+                    'small': 'Small',
+                    'large': 'Large',
+                    'for_two': 'For 2 people',
+                    'for_four': 'For 4 people',
+                    'rights_reserved': 'All rights reserved',
+                    'chardonnay_desc': 'Dry white wine with notes of citrus and peach',
+                    'sauvignon_desc': 'Refreshing wine with aroma of green pepper and grass',
+                    'pinot_grigio_desc': 'Light wine with taste of pear and apple',
+                    'merlot_desc': 'Soft wine with notes of cherry and forest fruits',
+                    'cabernet_desc': 'Rich wine with taste of black currant and dark coffee',
+                    'pinot_noir_desc': 'Elegant wine with aroma of strawberry and vanilla',
+                    'provence_rose_desc': 'Light rosé wine with fresh notes of red berries',
+                    'red_vineyard_rose_desc': 'Rosé wine with intense taste of strawberry and watermelon',
+                    'pale_rose_desc': 'Dry rosé wine with aroma of citrus and caramel',
+                    'whiskey': 'Whiskey',
+                    'whiskey_desc': 'Selection from world-famous whiskey brands',
+                    'vodka': 'Vodka',
+                    'vodka_desc': 'Vodka from the best world producers',
+                    'rakija': 'Rakija',
+                    'rakija_desc': 'Traditional Macedonian rakija from various fruits',
+                    'cheese_board': 'Cheese Board',
+                    'cheese_board_desc': 'Selection of local and international cheeses with fruits and bread',
+                    'mezze': 'Mezze',
+                    'mezze_desc': 'Traditional mezze with specialties from Macedonia',
+                    'mixed_meats': 'Mixed Meats',
+                    'mixed_meats_desc': 'Selection of dried meats and sausages from regional producers'
+                }
+            };
+            
+            // Language toggle functionality
+            languageOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    
+                    // Update active language button
+                    languageOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update all translatable elements
+                    document.querySelectorAll('[data-translate]').forEach(element => {
+                        const key = element.getAttribute('data-translate');
+                        if (translations[lang][key]) {
+                            element.textContent = translations[lang][key];
+                        }
+                    });
+                    
+                    // Update HTML lang attribute
+                    document.documentElement.lang = lang;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
